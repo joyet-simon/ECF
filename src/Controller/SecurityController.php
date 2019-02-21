@@ -10,15 +10,15 @@ class SecurityController extends AbstractController {
     /**
      * @Route("/login", name="login")
      */
-    public function index(\App\Repository\UserRepository $rep, \Symfony\Component\HttpFoundation\Request $req, \Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface $paswwordEncoder) {
+    public function login(\App\Repository\UserRepository $rep, \Symfony\Component\HttpFoundation\Request $req, \Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface $paswwordEncoder) {
         $dto = new \App\Entity\User();
         $form = $this->createForm(\App\Form\LoginType::class, $dto);
         $form->handleRequest($req);
         $error = "";
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $rep->findOneByUsername($dto->getUsername());
-            if ($user!= null) {
-                if (\App\Service\Encoder::encoderPassword($paswwordEncoder, $user) == \App\Service\Encoder::encoderPassword($paswwordEncoder, $dto)) {
+            if ($user != null) {
+                if (\App\Service\Encoder::verifPassword($paswwordEncoder, $user, $dto)) {
                     $req->getSession()->set("username", $user->getUsername());
                     return $this->redirectToRoute("home");
                 } else {
@@ -34,7 +34,13 @@ class SecurityController extends AbstractController {
                     'errorMessage' => $error,
         ]);
     }
-    
-    
+
+    /**
+     * @Route("/logout", name="logout")
+     */
+    public function logout(\Symfony\Component\HttpFoundation\Request $req) {
+        $req->getSession()->invalidate();
+        return $this->redirectToRoute("home");
+    }
 
 }
