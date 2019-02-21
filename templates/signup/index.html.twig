@@ -4,11 +4,16 @@
 
 {% block body %}
     <h1>Create new User</h1>
-    {{ form_start(form) }}
-    {{ form_row(form.username) }}
-    {{ form_row(form.email) }}
-    {{ form_row(form.password.first) }}
-    {{ form_row(form.password.second) }}
-    {{ form_end(form) }}
-    <div class="alert alert-danger">{{ errorMessage }}</div>
+    <div class="row justify-content-start">
+        <div class="col-5 jumbotron">
+            {{ form_start(form) }}
+            {{ form_row(form.username) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.password.first) }}
+            {{ form_row(form.password.second) }}
+            {{ form_widget(form.signin, {'attr': {'class': 'btn btn-outline-info'}}) }}
+            {{ form_end(form) }}
+            {{ errorMessage }}
+        </div>
+    </div>
 {% endblock %}

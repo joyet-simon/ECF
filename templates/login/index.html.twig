@@ -3,11 +3,16 @@
 {% block title %}Login{% endblock %}
 
 {% block body %}
-    <h1>Login please</h1>
-    {{ form_start(form) }}
-    {{ form_widget(form.username) }}
-    {{ form_widget(form.password) }}
-    {{ form_end(form) }}
-    <div class="alert alert-danger">{{ errorMessage }}</div>
+    <div class="row justify-content-end">
+        <div class="col-5 jumbotron">
+            <h1>Login please</h1>
+            {{ form_start(form) }}
+            {{ form_row(form.username, {'attr': {'class': 'form-group'}}) }}
+            {{ form_row(form.password, {'attr': {'class': 'form-group'}}) }}
+            {{ form_widget(form.login, {'attr': {'class': 'btn btn-outline-info'}}) }}
+            {{ form_end(form) }}
+            {{ errorMessage }}
+        </div>
 
+    </div>
 {% endblock %}

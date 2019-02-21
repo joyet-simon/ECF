@@ -17,7 +17,9 @@
         {% endblock %}
         {% block body %}
             {%if app.session.get("username")%}
-                Bienvenue {{app.session.get("username")}}
+                <div class="display-1 text-center">Welcome {{app.session.get("username")}}</div>
+            {% else%}
+                <div class="display-1 text-center">Welcome on this page which is useless!</div>
             {%endif%}
         {% endblock %}
         {% block javascripts %}
