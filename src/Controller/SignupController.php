@@ -4,26 +4,25 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class SigninController extends AbstractController {
+class SignupController extends AbstractController {
 
     /**
-     * @Route("/signin", name="signin")
+     * @Route("/signup", name="signup")
      */
-    public function signin(\Symfony\Component\HttpFoundation\Request $req, UserPasswordEncoderInterface $passwordEncoder) {
+    public function signup(\Symfony\Component\HttpFoundation\Request $req, \Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface $paswwordEncoder) {
         $user = new \App\Entity\User();
         $form = $this->createForm(\App\Form\UserType::class, $user);
         $form->handleRequest($req);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $password = $passwordEncoder->encodePassword($user, $user->getPassword());
-            $user->setPassword($password);
+            $user->setPassword(\App\Service\Encoder::encoderPassword($paswwordEncoder, $user));
+            $user->setRole("ROLE_USER");
             $em->persist($user);
             $em->flush();
-            return $this->redirectToRoute("home");
+            return $this->redirectToRoute("login");
         }
-        return $this->render('signin/index.html.twig', [
+        return $this->render('signup/index.html.twig', [
                     'user' => $user,
                     'form' => $form->createView(),
         ]);

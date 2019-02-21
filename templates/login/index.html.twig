@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+    <h1>Login please</h1>
+    {{ form_start(form) }}
+    {{ form_widget(form.username) }}
+    {{ form_widget(form.password) }}
+    {{ form_end(form) }}
+    <div class="alert alert-danger">{{ errorMessage }}</div>
+
+{% endblock %}

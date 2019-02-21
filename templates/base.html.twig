@@ -9,7 +9,11 @@
     </head>
     <body>
         {% block menu %}
-            {%include 'nav.html.twig' %}
+            {%if app.session.get("username")%}
+                {%include 'navUser.html.twig' %}
+            {% else%}
+                {%include 'nav.html.twig' %}
+            {%endif%}
         {% endblock %}
         {% block body %}
 

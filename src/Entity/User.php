@@ -31,8 +31,11 @@ class User implements UserInterface {
      * @ORM\Column(type="string", length=255)
      */
     private $password;
-    
-    private $roles = [];
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $role;
 
     public function getId() {
         return $this->id;
@@ -78,6 +81,16 @@ class User implements UserInterface {
 
     public function getSalt() {
         
+    }
+
+    public function getRole(){
+        return $this->role;
+    }
+
+    public function setRole(string $role): self {
+        $this->role = $role;
+
+        return $this;
     }
 
 }

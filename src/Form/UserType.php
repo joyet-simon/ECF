@@ -11,7 +11,7 @@ class UserType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-                ->add('username', \Symfony\Component\Form\Extension\Core\Type\TextType::class, [])
+                ->add('username', \Symfony\Component\Form\Extension\Core\Type\TextType::class)
                 ->add('email', \Symfony\Component\Form\Extension\Core\Type\EmailType::class)
                 ->add('password', \Symfony\Component\Form\Extension\Core\Type\RepeatedType::class, [
                     'type' => \Symfony\Component\Form\Extension\Core\Type\PasswordType::class,
