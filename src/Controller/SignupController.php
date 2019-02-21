@@ -14,17 +14,34 @@ class SignupController extends AbstractController {
         $user = new \App\Entity\User();
         $form = $this->createForm(\App\Form\UserType::class, $user);
         $form->handleRequest($req);
+        $error = "";
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $user->setPassword(\App\Service\Encoder::encoderPassword($paswwordEncoder, $user));
-            $user->setRole("ROLE_USER");
-            $em->persist($user);
-            $em->flush();
-            return $this->redirectToRoute("login");
+            $qb = $em->createQueryBuilder();
+            $qb->select("u")->from("App:User", "u")->where("u.username = :name")->setParameter("name", $user->getUsername());
+            $userExist = $qb->getQuery()->getOneOrNullResult();
+            if ($userExist) {
+                $error = "Username already exist!";
+            } else {
+                $qb2 = $em->createQueryBuilder();
+                $qb2->select("u2")->from("App:User", "u2")->where("u2.email = :email")->setParameter("email", $user->getEmail());
+                $userExist = $qb2->getQuery()->getOneOrNullResult();
+                if ($userExist) {
+                    $error = "Email already exist!";
+                } else {
+                    $userExist = $qb->getQuery()->getOneOrNullResult();
+                    $user->setPassword(\App\Service\Encoder::encoderPassword($paswwordEncoder, $user));
+                    $user->setRole("ROLE_USER");
+                    $em->persist($user);
+                    $em->flush();
+                    return $this->redirectToRoute("login");
+                }
+            }
         }
         return $this->render('signup/index.html.twig', [
                     'user' => $user,
                     'form' => $form->createView(),
+                    'errorMessage' => $error,
         ]);
     }
 
